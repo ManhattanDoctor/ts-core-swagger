@@ -43,5 +43,8 @@
     "bugs": {
         "url": "https://github.com/ManhattanDoctor/ts-core-swagger/issues"
     },
-    "homepage": "https://github.com/ManhattanDoctor/ts-core-swagger#readme"
+    "homepage": "https://github.com/ManhattanDoctor/ts-core-swagger#readme",
+    "publishConfig": {
+        "access": "public"
+    }
 }
