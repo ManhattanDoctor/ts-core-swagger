@@ -34,7 +34,6 @@ import {
     ApiPropertyOptional,
     ApiExtraModels,
     ApiHideProperty,
-    ApiSchema,
     getSchemaPath,
     refs,
 } from '@ts-core/swagger';
@@ -49,7 +48,6 @@ class Address {
     city: string;
 }
 
-@ApiSchema({ name: 'User', description: 'Модель пользователя' })
 @ApiExtraModels(Address)
 class CreateUserDto {
     @ApiProperty({ description: 'Имя пользователя' })
@@ -109,15 +107,6 @@ class CreateUserDto {
 
 Регистрирует дополнительные модели, которые должны быть включены в OpenAPI-документацию, даже если они не используются напрямую в контроллерах.
 
-#### `ApiSchema(options?)`
-
-Задаёт кастомное имя и описание для схемы класса.
-
-| Опция         | Тип      | Описание                    |
-|---------------|----------|-----------------------------|
-| `name`        | `string` | Имя схемы в OpenAPI         |
-| `description` | `string` | Описание схемы              |
-
 ### Утилиты
 
 #### `getSchemaPath(model)`
@@ -150,7 +139,6 @@ refs(Address, CreateUserDto);
 | `swagger/apiModelPropertiesArray` | Список декорированных свойств на прототипе      |
 | `swagger/apiModelProperties`      | Метаданные свойства (type, enum, description)   |
 | `swagger/apiExtraModels`          | Дополнительные модели для документации          |
-| `swagger/apiSchema`               | Кастомное имя и описание схемы класса           |
 
 На стороне NestJS `@nestjs/swagger` читает эти метаданные прозрачно — никакой адаптер или плагин не нужен.
 

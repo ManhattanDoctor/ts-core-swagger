@@ -114,12 +114,6 @@ export function ApiHideProperty(): PropertyDecorator {
     };
 }
 
-export function ApiSchema(options: { name?: string; description?: string } = {}): ClassDecorator {
-    return (target: Function) => {
-        Reflect.defineMetadata('swagger/apiSchema', options, target);
-    };
-}
-
 export function getSchemaPath(model: string | Function): string {
     let name = typeof model === 'string' ? model : model.name;
     return `#/components/schemas/${name}`;
