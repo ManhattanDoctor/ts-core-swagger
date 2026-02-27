@@ -116,6 +116,18 @@ export function ApiHideProperty(): PropertyDecorator {
     };
 }
 
+export interface IApiSchemaOptions {
+    name?: string;
+    description?: string;
+}
+
+export function ApiSchema(options?: IApiSchemaOptions): ClassDecorator {
+    return (target: Function) => {
+        let existing = Reflect.getMetadata('swagger/apiSchema', target) || [];
+        Reflect.defineMetadata('swagger/apiSchema', [...existing, options], target);
+    };
+}
+
 export function getSchemaPath(model: string | Function): string {
     let name = typeof model === 'string' ? model : model.name;
     return `#/components/schemas/${name}`;
