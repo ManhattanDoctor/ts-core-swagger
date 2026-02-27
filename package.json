@@ -1,6 +1,6 @@
 {
     "name": "@ts-core/swagger",
-    "version": "11.0.4",
+    "version": "11.0.5",
     "description": "Framework-agnostic TypeScript decorators for Swagger/OpenAPI metadata, compatible with @nestjs/swagger",
     "main": "./cjs/public-api.js",
     "module": "./esm/public-api.js",
