@@ -67,7 +67,9 @@ function createDecorator(options: IApiPropertyOptions = {}, required?: boolean):
         if (type !== undefined && !metadata.type) {
             metadata.type = type;
         } else if (!metadata.type) {
-            metadata.type = Reflect.getMetadata('design:type', target, propertyKey);
+            let _target = target;
+            let _key = propertyKey;
+            metadata.type = () => Reflect.getMetadata('design:type', _target, _key);
         }
 
         if (isArray && !metadata.isArray) {
