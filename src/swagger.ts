@@ -26,7 +26,7 @@ const KNOWN_KEYS = ['description', 'type', 'enum', 'isArray', 'example', 'requir
 
 function createDecorator(options: IApiPropertyOptions = {}, required?: boolean): PropertyDecorator {
     return (target: object, propertyKey: string | symbol) => {
-        let properties: string[] = Reflect.getMetadata('swagger/apiModelPropertiesArray', target) || [];
+        let properties: string[] = [...(Reflect.getMetadata('swagger/apiModelPropertiesArray', target) || [])];
         let key = `:${String(propertyKey)}`;
         if (!properties.includes(key)) {
             properties.push(key);
@@ -106,7 +106,7 @@ export function ApiExtraModels(...models: Function[]): ClassDecorator {
 
 export function ApiHideProperty(): PropertyDecorator {
     return (target: object, propertyKey: string | symbol) => {
-        let properties: string[] = Reflect.getMetadata('swagger/apiModelPropertiesArray', target) || [];
+        let properties: string[] = [...(Reflect.getMetadata('swagger/apiModelPropertiesArray', target) || [])];
         let key = `:${String(propertyKey)}`;
         let index = properties.indexOf(key);
         if (index !== -1) {
