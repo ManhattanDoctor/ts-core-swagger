@@ -22,7 +22,22 @@ function getEnumType(values: Array<any>): 'string' | 'number' {
     return values.every(v => typeof v === 'number') ? 'number' : 'string';
 }
 
-const KNOWN_KEYS = ['description', 'type', 'enum', 'isArray', 'example', 'required'];
+/**
+ * Тип свойства из design:type — так же, как делает сам @nestjs/swagger: TypeScript пишет
+ * design:type раньше, чем срабатывают декораторы, поэтому он уже доступен.
+ * Если его ещё нет (класс объявлен ниже по файлу), отдаётся ленивая функция. Её имя обязано
+ * быть «type»: @nestjs/swagger только так отличает ленивый тип от класса, а безымянную
+ * стрелку принимает за класс без имени и пишет $ref на пустую схему «#/components/schemas/»
+ */
+function getDesignType(target: object, propertyKey: string | symbol): any {
+    let item = Reflect.getMetadata('design:type', target, propertyKey);
+    if (item !== undefined) {
+        return item;
+    }
+    return { type: () => Reflect.getMetadata('design:type', target, propertyKey) }.type;
+}
+
+const KNOWN_KEYS =['description', 'type', 'enum', 'isArray', 'example', 'required'];
 
 function createDecorator(options: IApiPropertyOptions = {}, required?: boolean): PropertyDecorator {
     return (target: object, propertyKey: string | symbol) => {
@@ -67,9 +82,7 @@ function createDecorator(options: IApiPropertyOptions = {}, required?: boolean):
         if (type !== undefined && !metadata.type) {
             metadata.type = type;
         } else if (!metadata.type) {
-            let _target = target;
-            let _key = propertyKey;
-            metadata.type = () => Reflect.getMetadata('design:type', _target, _key);
+            metadata.type = getDesignType(target, propertyKey);
         }
 
         if (isArray && !metadata.isArray) {
